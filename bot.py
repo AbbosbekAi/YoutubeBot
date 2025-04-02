@@ -1,5 +1,4 @@
 import asyncio
-from asyncio.log import logger
 import logging
 import os
 import random
@@ -8,6 +7,10 @@ from aiogram.types import FSInputFile
 import yt_dlp
 
 TOKEN = "7512648492:AAHnbwJySnowJjFBos79duaeIk20ymL6Gq8"
+
+# Logging sozlamalari
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
@@ -19,13 +22,13 @@ async def send_welcome(message: types.Message):
                         "Mening hozirgi versiyam: 0.2 medium🤖")
     
 @dp.message(F.text == "/help")
-async def send_welcome(message: types.Message):
+async def send_help(message: types.Message):
     await message.reply("Bot bo'yicha savollar bo'lsa!\n"
                         "Telegram orqali @zuPREDATOR👨‍💻\n"
                         "Kamchiliklar uchun uzr!❤️")
     
 @dp.message(F.text == "/info")
-async def send_welcome(message: types.Message):
+async def send_info(message: types.Message):
     await message.reply("Botning hozirgi versiyasi: 0.2 medium\n"
                         "Sana: 2025.03.29\n"
                         "Bot 50mb yuqori videolarni yuklab beraolmaydi!")
@@ -50,7 +53,9 @@ async def download_youtube_video(message: types.Message):
     video_filename = f"video_{random.randint(1000, 9999)}.mp4"
     ydl_opts = {
         "format": "best",  # YouTube video formatini eng yuqori sifatga o'rnatamiz
-        "outtmpl": video_filename  # Video nomini o'zgaruvchan qilish
+        "outtmpl": video_filename,  # Video nomini o'zgaruvchan qilish
+        "logger": logger,  # Log yozish
+        "progress_hooks": [lambda d: logger.info(f"Progress: {d['status']} {d.get('filename', '')}")]  # Progressni loglash
     }
 
     try:
@@ -63,6 +68,7 @@ async def download_youtube_video(message: types.Message):
         await message.answer_video(video_file)
 
     except Exception as e:
+        logger.error(f"Video yuklashda xatolik: {e}", exc_info=True)
         await message.reply(f"❌ Xatolik yuz berdi: {e}")
 
     finally:
