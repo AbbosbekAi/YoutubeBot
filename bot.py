@@ -42,20 +42,19 @@ async def chat_functions(message: types.Message):
                         "2️⃣ MP3 formatda yuklab berish. | versiya: 0.3 high\n"
                         "3️⃣ Instagram va Tiktokdan video yuklab olish. | versiya: 0.4 medium")
 
-# Agar foydalanuvchi boshqa narsa yozsa
-#@dp.message(F.text)
-#async def unknown_message(message: types.Message):
- #   await message.reply("Notanish so'z agar Youtubedan video yuklamoqchi bolsangiz link yuboring!")    
-
 @dp.message(F.text.contains("youtube.com") | F.text.contains("youtu.be"))
 async def download_youtube_video(message: types.Message):
     url = message.text
     status_message = await message.reply("⏳ Yuklab olinmoqda, biroz kuting...")
 
     video_filename = f"video_{random.randint(1000, 9999)}.mp4"
-    ydl_opts = {"format": "best", "outtmpl": video_filename}
+    ydl_opts = {
+        "format": "best",  # YouTube video formatini eng yuqori sifatga o'rnatamiz
+        "outtmpl": video_filename  # Video nomini o'zgaruvchan qilish
+    }
 
     try:
+        # yt-dlp bilan video yuklash
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
 
