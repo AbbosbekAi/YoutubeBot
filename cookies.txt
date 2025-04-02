@@ -1,0 +1,1 @@
+yt-dlp --cookies /path/to/cookies.txt https://www.youtube.com/watch?v=fLNupdOpRwI
