@@ -1,1 +1,18 @@
-yt-dlp --cookies /path/to/cookies.txt https://www.youtube.com/watch?v=fLNupdOpRwI
+import requests
+
+# YouTube cookie’larini kiritamiz
+cookies = {
+    "SID": "g.a000vQhlx_0l367Tk-1gxofdQzvw84VPh0W1Axp-BkY-QAXgweDLKY3oGVbAX8VwtAfF3C4pcQACgYKAXoSARYSFQHGX2MiM628vYFT6UqyuiVvCNIEehoVAUF8yKqxhT45W_RlGyrB0GHupXSB0076",
+    "SAPISID": "sJ6FWBC7AFrAYPrb/AZ5iEjxbtG7_DrE2x",
+    "APISID": "SugWHUmCj5Ni0ogJ/As95vojUb7oUxDdAy",
+    "SSID": "AXGKlC40KMVOTosPS",
+}
+
+# So‘rovni yuboramiz
+headers = {"User-Agent": "Mozilla/5.0"}
+url = "https://www.youtube.com"
+
+response = requests.get(url, headers=headers, cookies=cookies)
+
+print(response.status_code)  # 200 chiqsa, cookie ishlayapti
+
