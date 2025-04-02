@@ -54,7 +54,7 @@ async def download_youtube_video(message: types.Message):
     ydl_opts = {
         "format": "best",  # YouTube video formatini eng yuqori sifatga o'rnatamiz
         "outtmpl": video_filename,  # Video nomini o'zgaruvchan qilish
-        "cookies": "cookies.txt"  # COOKIE faylini ulash
+        "cookies": "cookies.txt",  # COOKIE faylini ulash
         "logger": logger,  # Log yozish
         "progress_hooks": [lambda d: logger.info(f"Progress: {d['status']} {d.get('filename', '')}")]  # Progressni loglash
     }
